@@ -1,0 +1,139 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:gravity="center"
+    android:text=""
+    android:textSize="20dp"
+    android:id="@+id/flightNo"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_below="@+id/flightNo"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Departure: "
+                android:textSize="12dp"
+                android:id="@+id/depTextView"
+                android:layout_below="@+id/linearLayout1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Hello"
+                android:textSize="12dp"
+                android:id="@+id/depName"
+                android:layout_below="@+id/linearLayout1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Arrival: "
+                android:textSize="12dp"
+                android:id="@+id/arrTextView"
+                android:layout_below="@+id/linearLayout1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Hello"
+                android:textSize="12dp"
+                android:id="@+id/arrName"
+                android:layout_below="@+id/linearLayout1"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_below="@+id/linearLayout1"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout2">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.55">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Departure Time: "
+                android:textSize="12dp"
+                android:id="@+id/depTimeTextView"
+                android:layout_below="@+id/linearLayout1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Hello"
+                android:textSize="12dp"
+                android:id="@+id/depTimeName"
+                android:layout_below="@+id/linearLayout1"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Price: "
+                android:layout_gravity=""
+                android:textSize="12dp"
+                android:id="@+id/priTextView"
+                android:layout_below="@+id/linearLayout1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Hello"
+                android:textSize="12dp"
+                android:id="@+id/priName"
+                android:layout_below="@+id/linearLayout1"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

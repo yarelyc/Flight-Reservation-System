@@ -15,8 +15,7 @@ public class Transaction {
 
     }
 
-    public Transaction(int transactionId, String transactionType, String userName, String transactionDate, String transactionTime){
-        this.transactionId = transactionId;
+    public Transaction(String transactionType, String userName, String transactionDate, String transactionTime){
         this.transactionType = transactionType;
         this.userName = userName;
         this.transactionDate= transactionDate;

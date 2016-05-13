@@ -8,15 +8,16 @@ public class Reservation {
     private int flightId;
     private int numberOfTickets;
     private int transactionId;
+    private int isCancel;
 
     public Reservation(){
 
     }
-    public Reservation(int reservationId, int flightId, int numberOfTickets, int transactionId){
-        this.reservationId = reservationId;
+    public Reservation( int flightId, int numberOfTickets, int transactionId, int isCancel){
         this.flightId= flightId;
         this.numberOfTickets = numberOfTickets;
         this.transactionId = transactionId;
+        this.isCancel = isCancel;
     }
 
     public int getReservationId() {
@@ -56,5 +57,13 @@ public class Reservation {
         return "rsvt [rsvtId=" + reservationId + ", flgtId=" + flightId + ", nOT=" + numberOfTickets +
                 ", trsId= " + transactionId +"]";
 
+    }
+
+    public int getIsCancel() {
+        return isCancel;
+    }
+
+    public void setIsCancel(int isCancel) {
+        this.isCancel = isCancel;
     }
 }

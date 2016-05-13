@@ -8,50 +8,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Reservation"
+        android:text="Seat Reservation"
+        android:layout_marginBottom="12dp"
         android:id="@+id/title"
         android:layout_gravity="center_horizontal" />
 
-    <TextView
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Departure: "
-        android:layout_centerVertical = "true"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="100dp"
-        android:id="@+id/departure" />
+
 
     <EditText
         android:id="@+id/departureInput"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
+        android:hint="Reservation"
         android:paddingRight="20dp"
         android:paddingLeft="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_gravity="center"
-        android:layout_below="@+id/departure">
+        android:layout_below="@+id/title">
     </EditText>
 
-    <TextView
-        android:layout_marginTop="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Arrival"
-        android:layout_centerVertical = "true"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="100dp"
-        android:id="@+id/arrival"
-        android:layout_below="@+id/departureInput"/>
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Arrival"
         android:id="@+id/arrivalInput"
-        android:paddingLeft="5dp"
+        android:paddingLeft="8dp"
         android:layout_gravity="center"
         android:paddingRight="20dp"
-        android:layout_below="@id/arrival"/>
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/departureInput"/>
    <!-- <Spinner
         android:id="@+id/departTime"
         android:layout_width="200dp"
@@ -60,31 +47,24 @@
         android:layout_gravity="center"
         android:layout_height="wrap_content" />
         -->
-    <TextView
-        android:layout_marginTop="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Number of Tickets"
-        android:layout_centerVertical = "true"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="100dp"
-        android:id="@+id/numberOfTickets"
-        android:layout_below="@+id/arrivalInput"/>
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Number Of Tickets"
         android:id="@+id/numberOfTicketsInput"
         android:paddingLeft="5dp"
         android:layout_gravity="center"
         android:paddingRight="20dp"
         android:inputType="number"
-        android:layout_below="@id/numberOfTickets"/>
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/arrivalInput"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
+        android:id="@+id/submitButton"
         android:layout_below="@id/numberOfTicketsInput"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"/>

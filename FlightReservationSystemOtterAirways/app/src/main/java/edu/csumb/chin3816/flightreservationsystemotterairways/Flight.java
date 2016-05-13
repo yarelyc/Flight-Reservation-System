@@ -17,9 +17,8 @@ public class Flight {
 
     }
 
-    public Flight(int flightId, String flightNo, String departure, String arrival, String departureTime,
+    public Flight(String flightNo, String departure, String arrival, String departureTime,
                   int flightCapacity, double price){
-        this.flightId = flightId;
         this.flightNo = flightNo;
         this.departure = departure;
         this.arrival = arrival;
