@@ -1,6 +1,7 @@
 package edu.csumb.chin3816.flightreservationsystemotterairways;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //I want to launch a new activity
             //Toast.makeText(this,"create account",Toast.LENGTH_LONG).show();
         } else if (v.getId() == R.id.reservationSeatButton) {
-            startActivity(new Intent(this,ReserveSeat.class));
+            startActivity(new Intent(this, ReserveSeat.class));
             //Toast.makeText(this,"create account",Toast.LENGTH_LONG).show();
 
         } else if (v.getId() == R.id.manageSystemButton) {
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 passwordString = userPassword.getText().toString();
                 Log.d("Main Activity", userName.getText().toString());
                 Log.d("Main Activity", userPassword.getText().toString());
-               // Pattern last = Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#&!])");
+                // Pattern last = Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#&!])");
                 Pattern one = Pattern.compile("[a-z]");
                 Pattern two = Pattern.compile("[A-Z]");
                 Pattern three = Pattern.compile("@|#|$|!");
@@ -159,10 +160,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 errors++;
                 //match1.find() && match2.find() && match3.find() && match4.find() && match5.find() &&
-               // match6.find() && match7.find() && match8.find()
+                // match6.find() && match7.find() && match8.find()
                 //Log.d("Main Activity", "AA "+usernameString+" " + match.find() + " " + match1.find() + " " + match2.find());
                 if(match1.find() && match2.find() && match3.find() && match4.find() && match5.find() &&
-                   match6.find() && match7.find() && match8.find()){
+                        match6.find() && match7.find() && match8.find()){
 
                     if(type == 1){
                         if(db.isUserNameAvailable(userName.getText().toString())){
@@ -174,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             String d = date.format(new Date());
                             String t = time.format(new Date());
                             db.addTransaction(new Transaction("New Account ", userName.getText().toString(), d, t));
-                           // db.addReservation(new Reservation(123, 2,123));
+                            // db.addReservation(new Reservation(123, 2,123));
                             Toast.makeText(v.getContext(),"Account was successfully created",Toast.LENGTH_SHORT).show();
                             alertDialog.dismiss();
                         }else if(errors == 2){
@@ -187,23 +188,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }else if(type == 2){
                         //the system manager button was selected
                         if(db.isAdmin(userName.getText().toString(), userPassword.getText().toString())){
-                            ArrayList<User> list = db.getAllUsers();
+                            //ArrayList<User> list = db.getAllUsers();
                             Log.d("main", "afterretriving all users");
                             ArrayList<Reservation> list1 = db.getAllReservations();
                             Log.d("main", "before");
-                            ArrayList<Transaction> list2 = db.getAllTransactions();
+
+                            FragmentManager manager = getFragmentManager();
                             ArrayList<Flight> list3 = db.getAllFlights();
-                            ArrayList<Reservation> list4= db.getAllReservations();
+                            TransactionLogDialogFragment transactionLogDialogFragment = new TransactionLogDialogFragment();
+                            transactionLogDialogFragment.show(manager, "dialog");
+
+                            addAflightDialog(v, "Add new flight?", "Add Flight");
                             alertDialog.dismiss();
                         }else if(errors == 2){
                             errorDialog(v, "Sorry, Please try again");
                             alertDialog.dismiss();
+                        }else{
+                            Toast.makeText(v.getContext(),"Incorrect Username",Toast.LENGTH_SHORT).show();
                         }
 
                     }else if(type == 3){
                         //cancel reservation button was selected
                         if(db.isThereReservationTransaction(userName.getText().toString())){
                             Log.d("Main Activity", "there is a reservation available to cancel");
+                            Intent i = new Intent(v.getContext(), CancelReservationActivity.class);
+                            i.putExtra("username", userName.getText().toString());
+                            startActivity(i);
+
                         }else{
                             errorDialog(v, "No Reservation Available for: " + userName.getText().toString());
                             alertDialog.dismiss();
@@ -211,12 +222,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     Log.d("Main Activity", "there is a lowerCase and uppercase");
                 }else{
-                    if(type == 1 && errors == 2){
+                    if(errors == 2){
                         errorDialog(v, "Sorry, Please try again");
                         alertDialog.dismiss();
+                    }else{
+                        Toast.makeText(v.getContext(),"Incorrect Username",Toast.LENGTH_SHORT).show();
+
                     }
-                    Toast.makeText(v.getContext(),"Incorrect Username",Toast.LENGTH_SHORT).show();
                 }
+
 
             }
         });
@@ -229,9 +243,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 })
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(android.R.drawable.ic_dialog_info)
                 .show();
         errors = 0;
+    }
+
+    public void addAflightDialog(final View v, String msg, String title){
+        new AlertDialog.Builder(v.getContext())
+                .setMessage(msg)
+                .setTitle(title)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(v.getContext(), AddFlightActivity.class));
+                    }
+                })
+                .show();
     }
 
 

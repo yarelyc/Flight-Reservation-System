@@ -162,7 +162,7 @@ public class SQLHelper extends SQLiteOpenHelper{
 
     }
 
-    public void addFlight(Flight flight){
+    public boolean addFlight(Flight flight){
         Log.d(TAG, "before adding a flight");
         if(isFlightNoAvailable(flight.getFlightNo())){
             Log.d(TAG, "After if Statement adding a flight");
@@ -184,7 +184,9 @@ public class SQLHelper extends SQLiteOpenHelper{
             //Step 4.
             db.close();
             Log.d(TAG, "FLIGHT was added");
+            return true;
         }
+        return false;
 
     }
 
@@ -449,6 +451,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         return false;
     }
 
+
     public Boolean isUser(String name, String password){
         //1. build query
         String query  = "SELECT * FROM " + TABLE_USER + " WHERE " +
@@ -541,5 +544,119 @@ public class SQLHelper extends SQLiteOpenHelper{
             return true;
         }
         return false;
+    }
+
+    public String getTransactionId(String date, String time){
+
+        String query = "SELECT "+ KEY_TRANSACTIONID +" FROM " + TABLE_TRANSACTION + " WHERE " +
+                KEY_TRANSACTIONTIME + " = ? AND " +
+                KEY_TRANSACTIONDATE + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{time, date});
+        if(cursor.moveToFirst()){ //the transaction is there
+           return cursor.getString(0);
+        }
+        return null;
+    }
+
+    public void updateFlightCapacity(String flightNo, String minus, String capacity){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+            ContentValues values = new ContentValues();
+            try{
+                int i = Integer.parseInt(minus);
+                int total = Integer.parseInt(capacity);
+                values.put(KEY_FLIGHTCAPACITY, total-i);
+            }catch (Exception e){
+                return;
+            }
+            int i = db.update(TABLE_FLIGHT, //table
+                    values, // column/value
+                    KEY_FLIGHTNO + " = ?", // selections
+                    new String[]{flightNo}); //selection arg
+
+        db.close();
+
+    }
+
+    public ArrayList<Flight> getReservationToCancel(String name){
+        ArrayList<Flight> flights = new ArrayList<>();
+
+        Log.d("insqlhelper"," in get Reservation to Cancel");
+        String query= "SELECT " +  KEY_RESERVATIONID + ", " + KEY_NUMBEROFTICKETS +
+                 ", " + KEY_FLIGHTNO + ", " + KEY_DEPARTURE + ", " + KEY_ARRIVAL +
+                ", " + KEY_DEPARTURETIME + ", " + KEY_FLIGHTCAPACITY + ", " + KEY_PRICE + " FROM " + TABLE_TRANSACTION +
+                " NATURAL JOIN " + TABLE_RESERVATION + " NATURAL JOIN " + TABLE_FLIGHT + " WHERE " + KEY_USERNAME +
+                " = ? AND " + KEY_ISCANCEL + " = 0";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.d("insqlhelper"," after creating the database to Cancel");
+        Flight flight = new Flight();
+        Cursor cursor = db.rawQuery(query, new String[]{name});
+        if(cursor.moveToFirst()){
+            do{
+                flight = new Flight();
+
+                flight.setFlightId(Integer.parseInt(cursor.getString(0)));
+                flight.setNumberOfTickets(Integer.parseInt(cursor.getString(1)));
+                flight.setFlightNo(cursor.getString(2));
+                flight.setDeparture(cursor.getString(3));
+                flight.setArrival(cursor.getString(4));
+                flight.setDepartureTime(cursor.getString(5));
+                flight.setFlightCapacity(Integer.parseInt(cursor.getString(6)));
+                flight.setPrice(Double.parseDouble(cursor.getString(7)));
+
+                flights.add(flight);
+
+                Log.d(TAG, "getReservationToCancel() - " + flight.toString());
+            }while(cursor.moveToNext());//movetonext checks if i can move to the next row
+        }
+        return flights;
+    }
+
+
+    public boolean reservationSetToCancel (String transactionId){
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+
+            values.put(KEY_ISCANCEL, 1);
+
+            int i = db.update(TABLE_RESERVATION,
+                    values,
+                    KEY_RESERVATIONID + " = ?",
+                    new String[]{transactionId});
+            db.close();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    public Flight getReservation(String transactionId){
+        Flight flight = new Flight();
+
+        //1. build query
+        String query= "SELECT " + KEY_NUMBEROFTICKETS +
+                ", " + KEY_FLIGHTNO + ", " + KEY_DEPARTURE + ", " + KEY_ARRIVAL +
+                ", " + KEY_DEPARTURETIME + ", " + KEY_PRICE +", " +KEY_RESERVATIONID +" FROM " +
+                TABLE_RESERVATION + " NATURAL JOIN " + TABLE_FLIGHT + " WHERE " + KEY_TRANSACTIONID +
+                " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query,new String[] { String.valueOf(transactionId) } );
+
+        if(cursor.moveToFirst()){
+            do{
+                flight.setNumberOfTickets(Integer.parseInt(cursor.getString(0)));
+                flight.setFlightNo(cursor.getString(1));
+                flight.setDeparture(cursor.getString(2));
+                flight.setArrival(cursor.getString(3));
+                flight.setDepartureTime(cursor.getString(4));
+                flight.setPrice(Double.parseDouble(cursor.getString(5)));
+                flight.setFlightId(Integer.parseInt(cursor.getString(6)));
+            }while(cursor.moveToNext());
+        }
+
+        return flight;
     }
 }

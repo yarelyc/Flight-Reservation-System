@@ -12,6 +12,7 @@ public class Flight {
     private String departureTime;
     private int flightCapacity;
     private double price;
+    private int numberOfTickets;
 
     public Flight(){
 
@@ -85,8 +86,15 @@ public class Flight {
     @Override
     public String toString() {
         return "Flgt [id=" + flightId + ", no=" + flightNo + ", dp=" + departure +
-                ", ar= " + arrival + ", dpT= " + departureTime + ", flgtC= " + flightCapacity  + ", prc= " + price +  "]";
+                ", ar= " + arrival + ", dpT= " + departureTime + ", flgtC= " +
+                flightCapacity  + ", prc= " + price  +"]";
     }
 
+    public int getNumberOfTickets() {
+        return numberOfTickets;
+    }
 
+    public void setNumberOfTickets(int numberOfTickets) {
+        this.numberOfTickets = numberOfTickets;
+    }
 }

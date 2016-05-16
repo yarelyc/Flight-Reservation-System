@@ -1,6 +1,8 @@
 package edu.csumb.chin3816.flightreservationsystemotterairways;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,9 +55,9 @@ public class ReserveSeat extends Activity implements AdapterView.OnItemSelectedL
             try{
                 num = Integer.parseInt(numberOfTickets.getText().toString());
                 if(num>0 && num<=7)
-                    proceed();
+                    proceed(v);
                 else
-                    Toast.makeText(v.getContext(),"Invalid Number of Tickets ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(),"Reservation can't be process due to system restrictions", Toast.LENGTH_SHORT).show();
             }catch(Exception e){
                 Toast.makeText(v.getContext(),"Invalid Number of Tickets ", Toast.LENGTH_SHORT).show();
             }
@@ -65,16 +67,35 @@ public class ReserveSeat extends Activity implements AdapterView.OnItemSelectedL
 
     }
 
-    public void proceed(){
+    public void proceed(View v){
         Log.d("ResetTAg", departure.getText().toString());
         Log.d("ResetTAg", arrival.getText().toString());
         Log.d("ResetTAg", numberOfTickets.getText().toString());
-        Intent i = new Intent(this, FlightView.class);
 
-        i.putExtra("departure",departure.getText().toString());
-        i.putExtra("arrival",arrival.getText().toString());
-        i.putExtra("numberOfTickets", numberOfTickets.getText().toString());
-        startActivity(i);
+        ArrayList<Flight> flights = db.getFlights(departure.getText().toString(), arrival.getText().toString(), numberOfTickets.getText().toString());
+
+        if(!flights.isEmpty()){
+            Intent i = new Intent(this, FlightView.class);
+            i.putExtra("departure",departure.getText().toString());
+            i.putExtra("arrival",arrival.getText().toString());
+            i.putExtra("numberOfTickets", numberOfTickets.getText().toString());
+            startActivity(i);
+        }else{
+            noFlights(v,"No fligths available");
+        }
+
+
+    }
+
+    public void noFlights(View v, String msg){
+        new AlertDialog.Builder(v.getContext())
+                .setMessage(msg)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
 
     }
 
